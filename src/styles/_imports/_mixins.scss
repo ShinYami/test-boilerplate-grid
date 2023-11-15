@@ -1,0 +1,229 @@
+
+/* IMPORTS | MIXINS
+---------------------------------------------------------------------------------------------------- */
+
+/* Media Queries
+--------------------------------------------------------- */
+
+// Minimum WIDTH
+@mixin minw($val) {
+    @media only screen and (min-width: $val + 1) {
+        @content;
+    }
+}
+
+// Maximum WIDTH
+@mixin maxw($val) {
+    @media only screen and (max-width: $val) {
+        @content;
+    }
+}
+
+// Minimum HEIGHT
+@mixin minh($val) {
+    @media only screen and (min-height: $val + 1) {
+        @content;
+    }
+}
+
+// Maximum HEIGHT
+@mixin maxh($val) {
+    @media only screen and (max-height: $val) {
+        @content;
+    }
+}
+
+// Minimum WIDTH & Maximum WIDTH
+@mixin minw-maxw($minw, $maxw) {
+    @media only screen and (min-width: $minw + 1) and (max-width: $maxw) {
+        @content;
+    }
+}
+
+// WIDTH: range
+@mixin width-range($minw, $maxw: null) {
+    @if $maxw == null {
+        @include minw($minw) { @content; }
+    }
+    @else if $minw == null {
+        @include maxw($maxw) { @content; }
+    }
+    @else {
+        @include minw-maxw($minw, $maxw) { @content; }
+    }
+}
+
+// Minimum WIDTH & Maximum HEIGHT
+@mixin minw-maxh($w, $h) {
+    @media only screen and (min-width: $w) and (max-height: $h) {
+        @content;
+    }
+}
+
+// Minimum WIDTH & Minimum HEIGHT
+@mixin minw-minh($w,$h) {
+    @media only screen and (min-width: $w) and (min-height: $h) {
+        @content;
+    }
+}
+
+// Maximum WIDTH & Maximum HEIGHT
+@mixin maxw-maxh($w, $h) {
+    @media only screen and (max-width: $w) and (max-height: $h) {
+        @content;
+    }
+}
+
+// Maximum WIDTH & Minimum HEIGHT
+@mixin maxw-minh($w, $h) {
+    @media only screen and (max-width: $w) and (min-height: $h) {
+        @content;
+    }
+}
+
+// Maximum WIDTH OR Maximum HEIGHT
+@mixin maxw-or-maxh($w, $h) {
+    @media only screen and (max-width: $w), only screen and (max-height: $h) {
+        @content;
+    }
+}
+
+// Maximum WIDTH AND Maximum HEIGHT AND landscape orientation
+@mixin maxw-maxh-landscape($w, $h) {
+    @media only screen and (max-width: $w) and (max-height: $h) and (orientation: landscape) {
+        @content;
+    }
+}
+
+// Min aspect Ratio
+@mixin minratio($val) {
+    @media only screen and (min-aspect-ratio: $val) {
+        @content;
+    }
+}
+
+
+// UA Device or maxw
+@mixin device-or-maxw($w) {
+    .device & {
+        @content;
+    }
+
+    @media only screen and (max-width: $w) {
+        @content;
+    }
+}
+
+
+
+
+/* TEXT-RELATED
+---------------------------------------------------------------------------------------------------- */
+
+@mixin font-smoothing($value: on) {
+    @if $value == on {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
+
+
+
+/* HOVER
+---------------------------------------------------------------------------------------------------- */
+
+@mixin hover($active: on, $parent: null, $focusOnly: false) {
+    @if $parent == null {
+        @media (hover: hover) {
+            &:hover {
+                @content;
+            }
+        }
+
+        .is-usingKeyboard &:focus,
+        .is-usingKeyboard &:focus-within {
+            @content;
+        }
+    }
+
+    @else {
+        @media (hover: hover) {
+            @if $focusOnly {
+                #{$parent}:hover &,
+                .is-usingKeyboard #{$parent}:focus & {
+                    @content;
+                }
+            }
+
+            @else {
+                #{$parent}:hover &,
+                .is-usingKeyboard #{$parent}:focus-within & {
+                    @content;
+                }
+            }
+        }
+    }
+
+    @if $active == on {
+        &:active {
+            @content;
+        }
+    }
+}
+
+
+
+
+/* ACCESSIBILITY
+---------------------------------------------------------------------------------------------------- */
+
+@mixin visually-hidden() {
+    overflow: hidden !important;
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px;
+    padding: 0;
+
+    border: 0;
+    clip: rect(0 0 0 0);
+}
+
+
+
+
+/* SIZING
+---------------------------------------------------------------------------------------------------- */
+
+// NB: prefer using the aspect-ratio property from now on
+@mixin ratio($val, $after: false) {
+    position: relative;
+
+
+    @if $after == false {
+        &::before {
+            content: '';
+
+            display: block;
+            padding-top: $val;
+        }
+    }
+
+    @else {
+        &::after {
+            content: '';
+
+            display: block;
+            padding-top: $val;
+        }
+    }
+}
+
+
+

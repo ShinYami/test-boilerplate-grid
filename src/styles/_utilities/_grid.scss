@@ -1,0 +1,383 @@
+@use 'sass:math';
+
+
+
+
+/* GRID & STRUCTURE
+---------------------------------------------------------------------------------------------------- */
+
+/*
+    ┌─────────────────────────────────────────────────────┐
+    |                                                     |
+    |   [m:]  : Mobile           (743px >=)               |
+    |   [t:]  : Tablet portait   (744px <= && <= 960px)   |
+    |   [s:]  : Small Desktop    (960px <= && <= 1194px)  |
+    |   [d:]  : Desktop          (961px <)                |
+    |                                                     |
+    └─────────────────────────────────────────────────────┘
+*/
+
+
+
+
+/* Variables
+--------------------------------------------------------- */
+
+// Mobile
+$m-col-number: 4;
+$m-gut-number: $m-col-number - 1;
+
+$m-margin: 5.33vw;
+$m-col-width: 20.59%;
+$m-gut-width: math.div(100% - $m-col-number * $m-col-width, $m-gut-number);
+
+
+// Tablet Portait
+$t-col-number: 6;
+$t-gut-number: $t-col-number - 1;
+
+$t-margin: 5.38vw;
+$t-col-width: 14.15%;
+$t-gut-width: math.div(100% - $t-col-number * $t-col-width, $t-gut-number);
+
+
+// Desktop (Small & Regular)
+$d-col-number: 12;
+$d-gut-number: $d-col-number - 1;
+
+$d-margin: 6.25vw;
+$d-col-width: 6.1%;
+$d-gut-width: math.div(100% - $d-col-number * $d-col-width, $d-gut-number);
+
+
+// Desktop (Wide)
+$grid-max-width: 1520px;
+$grid-max-boundaries: round(math.div($grid-max-width, 100 - (strip-unit($d-margin) * 2)) * 100);
+
+$w-margin: calc((100vw - #{$grid-max-width}) / 2);
+$w-padding: calc(((#{$grid-max-boundaries} - (100vw - 100%)) - #{$grid-max-width}) / 2);
+
+
+
+
+/* Grid Containers & Rows
+--------------------------------------------------------- */
+
+.ctn {
+    padding-inline: var(--m);
+}
+
+.ctn-inner {
+    position: relative;
+    left: calc(-1 * var(--m));
+    width: calc(100% + (var(--m) * 2));
+    padding-inline: var(--m);
+}
+
+.d\:ctn-only {
+    @include maxw($bp-tablet) {
+        padding-inline: initial;
+    }
+}
+
+.t\:ctn-only {
+    @include minw($bp-tablet) {
+        padding-inline: initial;
+    }
+}
+
+.m\:ctn-only {
+    @include minw($bp-mobile) {
+        padding-inline: initial;
+    }
+}
+
+.s\:no-ctn {
+    @include maxw($bp-xx-small) {
+        padding-inline: initial;
+    }
+}
+
+.t\:no-ctn {
+    @include maxw($bp-tablet) {
+        padding-inline: initial;
+    }
+}
+
+.m\:no-ctn {
+    @include maxw($bp-mobile) {
+        padding-inline: initial;
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 0 var(--gut);
+
+
+    // MQ
+    @include minw($bp-mobile) {
+        flex-flow: row wrap;
+
+
+        // Modifiers
+        &--space {
+            justify-content: space-between;
+        }
+
+        &--end {
+            justify-content: flex-end;
+        }
+
+        &--ctr {
+            justify-content: center;
+            align-items: center;
+        }
+
+        &--vctr {
+            align-items: center;
+        }
+
+        &--hctr {
+            justify-content: center;
+        }
+
+        &--nowrap {
+            flex-wrap: nowrap;
+        }
+
+        &--reversed {
+            flex-direction: row-reverse;
+        }
+    }
+
+}
+
+.row__col {
+    @include minw($bp-tablet) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.gap {
+    gap: 0 var(--gut);
+}
+
+
+
+
+/* Grid construction
+--------------------------------------------------------- */
+
+@mixin buildGrid($col-number, $col-width, $gut-width, $min-width, $max-width: null, $prefix: '') {
+    @for $i from $col-number to 0 {
+        $cw: $col-width;
+        $gw: $gut-width;
+        $width: colw($i, $col-width, $gut-width);
+
+        @include width-range($min-width, $max-width) {
+            %#{$prefix}col-#{$i} {
+                width: $width;
+
+                // Sub-grids
+                @for $j from $i to 0 {
+                    $subgut: gutw(($j, $i, $col-number), $col-width, $gut-width);
+                    $subcol: math.div(100% - ($i - 1) * $subgut, $i);
+                    $subwidth: colw(($j, $i, $col-number), $col-width, $gut-width);
+
+                    .#{$prefix}col-#{$j} { width: $subwidth; }
+
+                    // Margins
+                    .#{$prefix}mr-#{$j}  { margin-right: #{$subcol * $j + ($j - 1) * $subgut}; }
+                    .#{$prefix}mrg-#{$j} { margin-right: #{$subcol * $j + $j * $subgut}; }
+                    .#{$prefix}ml-#{$j}  { margin-left: #{$subcol * $j + ($j - 1) * $subgut}; }
+                    .#{$prefix}mlg-#{$j} { margin-left: #{$subcol * $j + $j * $subgut}; }
+
+                    .#{$prefix}prg-#{$j} { padding-right: #{$subcol * $j + $j * $subgut}; }
+                    .#{$prefix}plg-#{$j} { padding-left: #{$subcol * $j + $j * $subgut}; }
+                }
+            }
+
+            .#{$prefix}col-#{$i} {
+                @extend %#{$prefix}col-#{$i};
+            }
+
+            .#{$prefix}mr-#{$i}  { margin-right: #{$cw * $i + ($i - 1) * $gw}; }
+            .#{$prefix}mrg-#{$i} { margin-right: #{$cw * $i + $i * $gw}; }
+            .#{$prefix}ml-#{$i}  { margin-left: #{$cw * $i + ($i - 1) * $gw}; }
+            .#{$prefix}mlg-#{$i} { margin-left: #{$cw * $i + $i * $gw}; }
+
+            .#{$prefix}pr-#{$i}  { box-sizing: content-box; padding-right: #{$cw * $i + ($i - 1) * $gw}; }
+            .#{$prefix}prg-#{$i} { box-sizing: content-box; padding-right: #{$cw * $i + $i * $gw}; }
+            .#{$prefix}pl-#{$i}  { box-sizing: content-box; padding-left: #{$cw * $i + ($i - 1) * $gw}; }
+            .#{$prefix}plg-#{$i} { box-sizing: content-box; padding-left: #{$cw * $i + $i * $gw}; }
+        }
+    }
+
+    @include width-range($min-width, $max-width) {
+        .#{$prefix}gut-1 { width: $gut-width; }
+    }
+}
+
+
+// Mobile
+@include buildGrid($m-col-number, $m-col-width, $m-gut-width, null, $bp-mobile, 'm\\:');
+
+// Tablet Portrait
+@include buildGrid($t-col-number, $t-col-width, $t-gut-width, $bp-mobile, $bp-tablet, 't\\:');
+
+// Desktop
+@include buildGrid($d-col-number, $d-col-width, $d-gut-width, $bp-tablet);
+
+// Small Desktop
+@include buildGrid($d-col-number, $d-col-width, $d-gut-width, $bp-tablet, $bp-xx-small, 's\\:');
+
+
+
+
+/* Misc helpers
+--------------------------------------------------------- */
+
+@include maxw($bp-xx-small) {
+    .s\:100 { width: 100%; }
+
+    .s\:mr-0 { margin-right: 0; }
+    .s\:ml-0 { margin-left: 0; }
+
+    .s\:hidden { display: none !important; }
+}
+
+@include maxw($bp-tablet) {
+    .t\:100 { width: 100%; }
+
+    .t\:mr-0 { margin-right: 0; }
+    .t\:ml-0 { margin-left: 0; }
+
+    .t\:hidden { display: none !important; }
+
+    .t\:ctn-inner {
+        position: relative;
+        left: calc(-1 * var(--m));
+        width: calc(100% + (var(--m) * 2));
+        padding-inline: var(--m);
+    }
+}
+
+@include maxw($bp-mobile) {
+    .m\:100 { width: 100%; }
+
+    .m\:mr-0 { margin-right: 0; }
+    .m\:ml-0 { margin-left: 0; }
+
+    .m\:hidden { display: none !important; }
+
+    .m\:ctn-inner {
+        position: relative;
+        left: calc(-1 * var(--m));
+        width: calc(100% + (var(--m) * 2));
+        padding-inline: var(--m);
+    }
+}
+
+@include minw($bp-mobile) {
+    .m\:only { display: none !important; }
+}
+
+@include minw($bp-tablet) {
+    .t\:only { display: none !important; }
+    .d\:100 { width: 100%; }
+}
+
+@include maxw($bp-tablet) {
+    .d\:only { display: none !important; }
+}
+
+.fl-l { float: left; }
+.fl-r { float: right; }
+.clr  { @include clearfix; }
+
+.ctr {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.gridSizer {
+    position: absolute;
+    inset: 0 auto auto 0;
+}
+
+.vph {
+    height: 100vh;
+}
+
+
+
+
+/* VISIBLE GRID
+---------------------------------------------------------------------------------------------------- */
+
+#grid-ctn {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    opacity: .2;
+
+    pointer-events: none;
+}
+
+#grid {
+    height: 100%;
+
+    transform-origin: center top;
+    transform: scaleY(0);
+    transition: transform .6s $ease-in-out-quad;
+
+    .grid-visible & {
+        transform: scaleY(1);
+    }
+}
+
+
+
+
+/* 👇🏻 Dev purposes only 👇🏻
+--------------------------------------------------------- */
+
+#gridWrapper {
+    display: flex;
+    gap: 0 var(--gut);
+    height: 100%;
+}
+
+.gridCol {
+    float: left;
+    height: 100%;
+
+    background: #f00;
+
+
+    // MQ
+    @include maxw($bp-tablet) {
+        &:nth-child(#{$t-col-number}) {
+            & ~ .gridCol {
+                display: none;
+            }
+        }
+    }
+
+    @include maxw($bp-mobile) {
+        &:nth-child(#{$m-col-number}) {
+            & ~ .gridCol {
+                display: none;
+            }
+        }
+    }
+}
+
+
+

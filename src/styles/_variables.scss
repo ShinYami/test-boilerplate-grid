@@ -1,0 +1,42 @@
+
+/* VARIABLES
+---------------------------------------------------------------------------------------------------- */
+
+/* Breakpoints
+--------------------------------------------------------- */
+
+$bp-fat:        2560px; // QHD
+
+$bp-xxx-wide:   2100px;
+$bp-xx-wide:    1920px; // Full HD
+$bp-x-wide-alt: 1792px; // MBP 16” 2019
+$bp-x-wide:     1728px; // MBP 16” 2021
+$bp-wide:       1680px; // MBP 15”
+
+$bp-medium-alt: 1512px; // MBP 14”
+$bp-medium:     1440px; // MBP 13”
+
+$bp-small:      1366px; // iPad Pro 12.9”
+$bp-x-small:    1280px; // Old MBP 13” / MBA 13”
+$bp-xx-small:   1194px; // iPad Pro 11”
+$bp-xxx-small:  1112px; // iPad Pro 10.5”
+
+$bp-tablet:     960px;
+
+$bp-mobile:      743px;
+$bp-x-mobile:    540px;
+$bp-xx-mobile:   360px;
+$bp-xxx-mobile:  350px;
+
+
+/* Colors
+--------------------------------------------------------- */
+
+// Black & white
+$c-white: #fff;
+$c-black: #000;
+
+/* Fonts
+--------------------------------------------------------- */
+
+// $f-M:        'PP Monument';

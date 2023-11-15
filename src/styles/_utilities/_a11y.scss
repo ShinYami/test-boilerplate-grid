@@ -1,0 +1,99 @@
+
+/* MISC A11Y STYLES & HELPERS
+---------------------------------------------------------------------------------------------------- */
+
+/* Helpers & Behaviors
+--------------------------------------------------------- */
+
+a:focus,
+button:focus {
+    outline-offset: .5rem;
+
+    .device &,
+    .is-usingMouse & {
+        outline: none !important;
+    }
+}
+
+.no-outline {
+    outline: none !important;
+}
+
+/*! purgecss start ignore */
+
+.sr-only:not(:focus),
+.visually-hidden {
+    @include visually-hidden;
+}
+
+.d-sr-only {
+    // MQ
+    @include minw($bp-tablet) {
+        @include visually-hidden;
+    }
+}
+
+.m-sr-only {
+    // MQ
+    @include maxw($bp-mobile) {
+        @include visually-hidden;
+    }
+}
+
+.js-only {
+    .no-js & {
+        display: none !important;
+    }
+}
+
+.rm {
+    .reduced-motion &,
+    .reduced-motion &::before,
+    .reduced-motion &::after {
+        transition: none !important;
+    }
+}
+
+.m\:no-tr {
+    // MQ
+    @include maxw($bp-mobile) {
+        transform: none !important;
+    }
+}
+
+.t\:no-tr {
+    // MQ
+    @include maxw($bp-tablet) {
+        transform: none !important;
+    }
+}
+
+.preload:not(.no-js) * {
+    transition: none !important;
+}
+
+/*! purgecss end ignore */
+
+
+
+
+/* Scroll anchors
+--------------------------------------------------------- */
+
+[id] {
+    scroll-margin-top: var(--navH);
+}
+
+
+
+/* Selection
+--------------------------------------------------------- */
+
+::selection      { color: #000; background: $c-white; }
+::-moz-selection { color: #000; background: $c-white; }
+
+img::selection      { background: rgba($c-white, .5); }
+img::-moz-selection { background: rgba($c-white, .5); }
+
+
+

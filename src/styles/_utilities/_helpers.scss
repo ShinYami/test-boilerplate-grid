@@ -1,0 +1,120 @@
+
+/* HELPERS
+---------------------------------------------------------------------------------------------------- */
+
+.no-select,
+.is-dragging * {
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+.no-interactive {
+    pointer-events: none !important;
+}
+
+.no-tr {
+    transition: none !important;
+}
+
+.no-rtr {
+    .is-resizing & {
+        transition: none !important;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+.oh {
+    overflow: hidden;
+}
+
+.cp {
+    clip-path: inset(0);
+}
+
+.ov {
+    overflow: visible;
+}
+
+.db {
+    display: block;
+}
+
+.dib {
+    display: inline-block;
+}
+
+.pr,
+.up {
+    position: relative;
+}
+
+.up { z-index: 1; }
+
+.actr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.of {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.ofc {
+    object-fit: cover;
+}
+
+.fill {
+    position: absolute;
+    inset: 0;
+}
+
+.c-cc {
+    color: currentcolor;
+}
+
+.f-cc {
+    fill: currentcolor;
+}
+
+.s-cc {
+    stroke: currentcolor;
+}
+
+.wct {
+    will-change: transform;
+}
+
+.to {
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+
+
+/* Background colors
+--------------------------------------------------------- */
+
+.bg {
+    &-white {
+        color: #000;
+
+        background: #fff;
+    }
+
+	&-black {
+		color: #fff;
+
+        background: #000;
+	}
+}

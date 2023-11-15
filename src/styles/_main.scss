@@ -1,0 +1,25 @@
+
+/* MAIN
+---------------------------------------------------------------------------------------------------- */
+
+/* Structure
+--------------------------------------------------------- */
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow-y: scroll;
+    width: 100%;
+	height: 100%;
+
+    text-rendering: optimizeLegibility;
+    @include font-smoothing(on);
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: #fff;
+    background-color: #000;
+}
+

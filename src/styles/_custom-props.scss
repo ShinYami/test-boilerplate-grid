@@ -1,0 +1,60 @@
+@use 'sass:math';
+
+
+
+
+/* CUSTOM PROPERTIES
+---------------------------------------------------------------------------------------------------- */
+
+:root {
+    // Viewport
+    --vw: 1vw;
+    --dvh: 1vh;
+    --svh: 1vh;
+    --lvh: 1vh;
+    --sbW: 15px; // Scrollbar width
+
+
+    // Grid
+    --m: #{$m-margin};
+    --col: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($m-col-width), 100)});
+    --gut: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($m-gut-width), 100)});
+
+
+    // Misc
+    --navH: 8rem;
+    --navOffset: 0;
+
+    // Support
+    @supports (top: 1svh) {
+        --dvh: 1dvh;
+        --svh: 1svh;
+        --lvh: 1lvh;
+    }
+
+
+    // MQ
+    @include minw($bp-mobile) {
+        --m: #{$t-margin};
+        --col: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($t-col-width), 100)});
+        --gut: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($t-gut-width), 100)});
+
+        --navH: 14.6rem;
+    }
+
+    @include minw($bp-tablet) {
+        --m: #{$d-margin};
+        --col: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($d-col-width), 100)});
+        --gut: calc((100vw - 2 * var(--m)) * #{math.div(strip-unit($d-gut-width), 100)});
+
+        --navH: 10rem;
+        --shortcutsShapeH: calc(100 * var(--svh) - 6rem);
+    }
+
+    @include minw($grid-max-boundaries) {
+        --m: #{$w-margin};
+    }
+}
+
+
+

@@ -1,0 +1,128 @@
+
+/* FUNCTION HELPERS
+---------------------------------------------------------------------------------------------------- */
+
+/// Function to calculate column dynamically
+/// @param {Number} $nb             Number of columns you desire for no nested grid
+/// @param {List}   $nb             List of numbers to calculate nested column
+///                                 (ex: (2, 4, 12) -> 2/4col for a base grid of 12)
+/// @param {Number} $col-width      Size of column width (especially for responsive)
+/// @param {Number} $gut-width      Size of gutter width (especially for responsive)
+/// @param {Bool}   $include-gut    Should include gutter in formula (especially for margin or padding uses)
+
+@use 'sass:math';
+
+@function colw($nb, $col-width: $d-col-width, $gut-width: $d-gut-width, $include-gut: false) {
+    $ig: if($include-gut, 0, 1);
+
+    @if length($nb) > 1 {
+        $cw: $col-width;
+        $gw: $gut-width;
+
+        $cn: nth($nb, 1);
+        $ct: nth($nb, 2);
+        $col-number: nth($nb, 3);
+
+        $subgut: math.div($gw * $col-number, $ct);
+        $subcol: math.div(100% - ($ct - 1) * $subgut, $ct);
+        $subwidth : $subcol * $cn + ($cn - $ig) * $subgut;
+
+        @return $subwidth;
+    }
+
+    @else {
+        $cw: $col-width;
+        $gw: $gut-width;
+
+        $width: $cw * $nb + ($nb - $ig) * $gw;
+
+        @return $width;
+    }
+}
+
+
+
+
+/// Function to calculate gut dynamically
+/// @param {Number} $nb             Number of columns you desire for no nested grid
+/// @param {List}   $nb             List of numbers to calculate nested column
+///                                 (ex: (2, 4, 12) -> 2/4col for a base grid of 12)
+/// @param {Number} $col-number         Number of columns
+/// @param {Number} $col-total-number   Total number of columns
+/// @param {Number} $gut-width          Size of gutter width (especially for responsive
+
+@function gutw($nb, $col-total-number: $d-col-number, $gut-width: $d-gut-width) {
+    @if length($nb) > 1 {
+        $cn: nth($nb, 1);
+        $ct: nth($nb, 2);
+        $col-number: nth($nb, 3);
+
+        @return math.div($gut-width, $ct) * $col-number;
+    }
+
+    @else {
+        @return math.div($gut-width, $col-total-number) * $nb;
+    }
+}
+
+
+
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+      @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+
+/// Rounds font-size and convers it to rem
+/// @param {String} $breakpoint - Breakpoint in pixels
+/// @param {Number} $multiplier - Multiply value
+/// @return {String} - Font size in rem
+@function round-fs($breakpoint, $multiplier) {
+    $bp: strip-unit($breakpoint);
+    $fs: round($bp * $multiplier);
+
+    @return #{$fs * 0.1}rem;
+}
+
+/// Relative values depending on the max grid
+/// @param {Number} $multiplier - Multiply grid max bounds
+@function w-margin($multiplier) {
+    @return calc(#{$w-margin-raw} - #{$w-max-margin} + #{$grid-max-boundaries * $multiplier});
+}
+
+/// Compute proportional value depending on the viewport width
+/// @param {Number} $size - Size in the sketch
+@function m-vw($size) {
+    @return math.div(strip-unit($size), 375) * 100vw;
+}
+
+/// Compute proportional value depending on the viewport width
+/// @param {Number} $size - Size in the sketch
+@function t-vw($size) {
+    @return math.div(strip-unit($size), 768) * 100vw;
+}
+
+/// Compute proportional value depending on the viewport width
+/// @param {Number} $size - Size in the sketch
+@function d-vw($size) {
+    @return math.div(strip-unit($size), 1440) * 100vw;
+}
+
+/// Compute proportional value depending on the viewport width
+/// @param {Number} $size - Size in the sketch
+@function w-vw($size) {
+    @return math.div(strip-unit($size), 1440) * $grid-max-boundaries;
+}
+

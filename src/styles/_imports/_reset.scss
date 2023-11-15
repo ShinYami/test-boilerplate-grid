@@ -1,0 +1,168 @@
+
+/* IMPORTS | RESET
+---------------------------------------------------------------------------------------------------- */
+
+/* General
+--------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(#000, 0);
+}
+
+*::before,
+*::after {
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+
+
+
+/* Specicifities
+--------------------------------------------------------- */
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+
+    font-style: normal;
+    font-size: 100%;
+
+    background: transparent;
+    border: 0;
+    outline: 0;
+}
+
+html {
+    font-size: 62.5%; // = 10px
+}
+
+body {
+    line-height: 1;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, main {
+    display: block;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+blockquote,
+q {
+    margin: 0;
+    quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+    content: none;
+}
+
+a,
+input,
+button,
+select,
+textarea {
+    @include appearance(none);
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+}
+
+input,
+select,
+textarea {
+    outline: none;
+}
+
+a {
+    vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+
+    font-size: 100%;
+    color: inherit;
+
+    background: transparent;
+}
+
+button {
+    padding: 0;
+
+    color: inherit;
+
+    cursor: pointer;
+}
+
+ins {
+    text-decoration: none;
+    color: #000;
+
+    background-color: #ff9;
+}
+
+mark {
+    font-style: italic;
+    font-weight: 700;
+    color: #000;
+
+    background-color: #ff9;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title],
+dfn[title] {
+    cursor: help;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    padding: 0;
+
+    border: none;
+}
+
+input,
+select {
+    vertical-align: middle;
+}
+
+dt,
+dd {
+    margin: 0;
+}
+
+
+
